@@ -4,6 +4,7 @@ library(sqldf) #needed to run sql queries on dataframes
 install.packages("tidyverse") #needed to deal with times
 library(lubridate) #^
 library(readxl)
+library(amelia)
 df = read.csv('rawraw.csv',na.strings = c("","NA")) # read in raw csv data
 temps = read_excel("Leaderboard - Yards 75 updated.xlsx",sheet = "temps") # read in additional temp data
 
@@ -15,6 +16,18 @@ time_to_Sec <- function(x){
   return(sec)
 }
 
+#Missing Age
+missmap(df)
+Completed<-amelia(df,m=1, idvars = c("Team", "Runner", "Run.Time", "Min", "Max", "Avg", "Nationality", "Gen", "Yard.1", "Yard.2", "Yard.3", "Yard.4", 
+                                     "Yard.5", "Yard.6", "Yard.7", "Yard.8", "Yard.9", "Yard.10", "Yard.11", "Yard.12", "Yard.13", "Yard.14", "Yard.15",
+                                     "Yard.16", "Yard.17", "Yard.18", "Yard.19", "Yard.20", "Yard.21", "Yard.22", "Yard.23", "Yard.24", "Yard.25",
+                                     "Yard.26", "Yard.27", "Yard.28", "Yard.29", "Yard.30", "Yard.31", "Yard.32", "Yard.33", "Yard.34", "Yard.35", 
+                                     "Yard.36", "Yard.37", "Yard.38", "Yard.39", "Yard.40", "Yard.41", "Yard.42", "Yard.43", "Yard.44", "Yard.45",
+                                     "Yard.46", "Yard.47", "Yard.48", "Yard.49", "Yard.50", "Yard.51", "Yard.52", "Yard.53", "Yard.54", "Yard.55", 
+                                     "Yard.56", "Yard.57", "Yard.58", "Yard.59", "Yard.60", "Yard.61", "Yard.62", "Yard.63", "Yard.64", "Yard.65",
+                                     "Yard.66", "Yard.67", "Yard.68", "Yard.69", "Yard.70", "Yard.71", "Yard.72", "Yard.73", "Yard.74", "Yard.75")) 
+write.amelia(obj=Completed, file.stem="outdata")
+View(Completed$imputations$imp1)
 
 
 #apply function to convert hours to seconds for easier math
